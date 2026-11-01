@@ -60,7 +60,6 @@
         }
     }
 
-    /* Top Bar with Logo & Small Corner Share Button */
     .top-header-row {
         display: flex;
         justify-content: space-between;
@@ -88,7 +87,6 @@
         margin-top: 2px;
     }
 
-    /* Small Corner WhatsApp Share Button */
     .corner-share-btn {
         background: #25D366;
         color: #ffffff;
@@ -111,7 +109,6 @@
         background: #22bf5b;
     }
 
-    /* SUCCESS ICON */
     .e-success-icon {
         width: 72px;
         height: 72px;
@@ -149,7 +146,6 @@
         margin-top: -6px;
     }
 
-    /* APPROVAL STATUS */
     .e-status-badge {
         text-align: center;
     }
@@ -166,7 +162,6 @@
         letter-spacing: 1px;
     }
 
-    /* APPLICATION DETAILS */
     .e-details {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -203,7 +198,6 @@
         overflow-wrap: anywhere;
     }
 
-    /* WALLET MESSAGE */
     .e-message {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -221,7 +215,6 @@
         color: var(--primary);
     }
 
-    /* WALLET REMINDER */
     .e-wallet-reminder {
         background: var(--primary-dark);
         border: 1px solid rgba(78, 179, 164, 0.3);
@@ -238,7 +231,6 @@
         color: var(--primary);
     }
 
-    /* MAIN BUTTON */
     .e-btn {
         display: block;
         width: 100%;
@@ -261,7 +253,6 @@
         background: #5dcab9;
     }
 
-    /* FOOTER */
     .e-footer {
         text-align: center;
         color: var(--text-secondary);
@@ -290,7 +281,6 @@
 
 <div class="e-fullscreen-wrapper">
 
-    <!-- TOP HEADER: HUBTEL LOGO & SMALL CORNER SHARE BUTTON -->
     <div class="top-header-row">
         <div class="e-logo">
             Hubtel <span>Business</span>
@@ -301,7 +291,6 @@
         </a>
     </div>
 
-    <!-- SUCCESS ANIMATION -->
     <div class="e-success-icon">✓</div>
 
     <h1 id="txtHeading">Congratulations!</h1>
@@ -310,14 +299,12 @@
         Your business capital application has been approved successfully.
     </p>
 
-    <!-- APPROVED STATUS -->
     <div class="e-status-badge">
         <div class="e-status" id="txtStatusBadge">
             ✓ CAPITAL APPROVED
         </div>
     </div>
 
-    <!-- APPLICATION INFORMATION -->
     <div class="e-details">
 
         <div class="e-detail-row">
@@ -357,24 +344,20 @@
 
     </div>
 
-    <!-- CELEBRATORY PROMO MESSAGE -->
     <div class="e-message">
         <strong>🎉 Celebrating 20 Years of Business Growth!</strong>
         <span>To celebrate 20 years of supporting business growth, Hubtel is offering business capital to eligible entrepreneurs and startups. Your approved funds are being prepared for rapid disbursement within 24 hours.</span>
     </div>
 
-    <!-- WALLET REMINDER -->
     <div class="e-wallet-reminder">
         <strong>🔐 Important Account Reminder</strong>
         <span>Your capital is scheduled to be disbursed within 24 hours. Please ensure your Hubtel wallet maintains a balance equivalent to 10% of your approved amount to guarantee smooth processing and instant release.</span>
     </div>
 
-    <!-- HOME BUTTON -->
     <a href="index.html" class="e-btn">
         🏠 Return to Homepage
     </a>
 
-    <!-- COPYRIGHT -->
     <div class="e-footer">
         Thank you for choosing Hubtel Business ❤️
         <br>
@@ -384,7 +367,6 @@
 </div>
 
 <script>
-// Retrieve saved user details from localStorage
 function getValue(key, fallback) {
     try {
         return localStorage.getItem(key) || fallback;
@@ -395,9 +377,8 @@ function getValue(key, fallback) {
 
 const name = getValue('hubtelUserName', getValue('userFullName', 'Entrepreneur'));
 const phone = getValue('hubtelUserPhone', getValue('userPhone', 'Not provided'));
-const amount = getValue('hubtelLoanAmount', getValue('loanAmount', 'Not provided'));
+const amount = getValue('hubtelLoanAmount', getValue('loanAmount', 'GH₵ 5,000'));
 
-// Display user information
 document.getElementById('applicant').textContent = name;
 document.getElementById('phone').textContent = phone;
 document.getElementById('amount').textContent = amount;
@@ -420,7 +401,6 @@ try {
 
 document.getElementById('applicationId').textContent = applicationId;
 
-// WhatsApp Share Function
 function shareToWhatsApp() {
     const shareText = `🎉 Exciting news for entrepreneurs and startups!\n\nTo celebrate 20 years of supporting business growth, Hubtel is offering business capital to eligible entrepreneurs and startups. 🚀\n\nIf you've been looking for an opportunity to grow your business or launch your startup, this could be your chance!\n\nApply here: https://hubtel.com\n\nDon't miss out! ❤️`;
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;

