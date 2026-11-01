@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-visual">
+    <title>Hubtel Business | Startup & Growth Loans</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --background: #202020;
+            --surface: #2E2E2E;
+            --text-primary: #FFFFFF;
+            --text-secondary: #BDBDBD;
+            --border: #3B3B3B;
+
+            --primary: #4EB3A4;
+            --primary-dark: #0E2924;
+
+            --accent-red: #E85D75;
+            --card-red: #77393E;
+
+            --accent-blue: #5685D6;
+            --card-blue: #384D6C;
+
+            --accent-orange: #FFB74D;
+            --card-orange: #371F03;
+
+            --icon-inactive: #757575;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--background);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--text-primary);
+        }
+
+        .hubtel-wrapper {
+            width: 100%;
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+        }
+
+        /* Top Brand Header */
+        .hubtel-header {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .hubtel-logo-text {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .hubtel-logo-text span {
+            color: var(--primary);
+        }
+
+        .hubtel-header p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        /* Trust Badges */
+        .hubtel-badges {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            background: var(--primary-dark);
+            border: 1px solid rgba(78, 179, 164, 0.3);
+            padding: 10px 12px;
+            border-radius: 12px;
+        }
+
+        /* Summary Preview Box */
+        .hubtel-summary {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .summary-item {
+            flex: 1;
+        }
+
+        .summary-item:not(:last-child) {
+            border-right: 1px solid var(--border);
+        }
+
+        .summary-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .summary-value {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        /* Sliders Card Group */
+        .hubtel-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 14px;
+        }
+
+        .card-highlight {
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .hubtel-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: var(--background);
+            outline: none;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hubtel-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(78, 179, 164, 0.5);
+            border: 3px solid var(--surface);
+            transition: transform 0.15s ease;
+        }
+
+        .hubtel-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        .slider-limits {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        /* Action Button */
+        .hubtel-btn {
+            display: block;
+            width: 100%;
+            background: var(--primary);
+            color: var(--primary-dark);
+            text-align: center;
+            padding: 18px;
+            border-radius: 18px;
+            font-size: 16px;
+            font-weight: 900;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .hubtel-btn:hover {
+            transform: translateY(-2px);
+            background: #5dcab9;
+        }
+
+        /* Footer */
+        .hubtel-footer {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 5px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        /* Floating Blinking Hubtel Idea Button */
+        .floating-idea-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: var(--surface);
+            border: 2px solid var(--primary);
+            color: var(--text-primary);
+            padding: 12px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            z-index: 100;
+            animation: pulseGlow 2s infinite;
+        }
+
+        .hubtel-pulse-icon {
+            width: 22px;
+            height: 22px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-dark);
+            font-size: 11px;
+            font-weight: 900;
+            animation: blinkIcon 1.5s infinite;
+        }
+
+        @keyframes blinkIcon {
+            0% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(78, 179, 164, 0.7); }
+            70% { transform: scale(1.1); opacity: 0.8; box-shadow: 0 0 0 10px rgba(78, 179, 164, 0); }
+            100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(78, 179, 164, 0); }
+        }
+
+        @keyframes pulseGlow {
+            0% { border-color: rgba(78, 179, 164, 0.5); }
+            50% { border-color: rgba(78, 179, 164, 1); box-shadow: 0 0 20px rgba(78,179,164,0.3); }
+            100% { border-color: rgba(78, 179, 164, 0.5); }
+        }
+
+        /* Ideas Modal Overlay */
+        #ideasModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(32, 32, 32, 0.85);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: var(--surface);
+            width: 100%;
+            max-width: 480px;
+            max-height: 85vh;
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            color: var(--text-primary);
+        }
+
+        .modal-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        .modal-header-row h3 {
+            font-size: 18px;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .ideas-list {
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 5px;
+        }
+
+        .idea-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px 16px;
+        }
+
+        .idea-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .idea-cost {
+            color: var(--accent-orange);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .idea-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hubtel-wrapper">
+        
+        <div class="hubtel-header">
+            <div class="hubtel-logo-text">Hubtel <span>Business</span></div>
+            <p>Accelerate your startup or expand operations with fast working capital from GH₵ 500 to GH₵ 50,000.</p>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="hubtel-badges">
+            <span>⚡ Instant Disbursement</span>
+            <span>🛡️ Secure Capital</span>
+            <span>📈 Flexible Growth</span>
+        </div>
+
+        <!-- Summary Preview Box -->
+        <div class="hubtel-summary">
+            <div class="summary-item">
+                <div class="summary-label">Monthly Repay</div>
+                <div class="summary-value" id="summaryMonthly">GH₵ 0</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Total Payable</div>
+                <div class="summary-value" id="summaryTotal">GH₵ 0</div>
+            </div>
+        </div>
+
+        <!-- Loan Amount Slider (500 to 50,000 Cedis) -->
+        <div class="hubtel-card">
+            <div class="card-top">
+                <span>Business Capital</span>
+                <span class="card-highlight" id="amountVal">GH₵ 5,000</span>
+            </div>
+            <input type="range" class="hubtel-slider" id="loanAmount" min="500" max="50000" step="500" value="5000">
+            <div class="slider-limits">
+                <span>GH₵ 500</span>
+                <span>GH₵ 50,000</span>
+            </div>
+        </div>
+
+        <!-- Payment Period Slider (Up to 24 Months) -->
+        <div class="hubtel-card">
+            <div class="card-top">
+                <span>Repayment Period</span>
+                <span class="card-highlight" id="periodVal">12 Months</span>
+            </div>
+            <input type="range" class="hubtel-slider" id="loanPeriod" min="1" max="24" step="1" value="12">
+            <div class="slider-limits">
+                <span>1 Month</span>
+                <span>24 Months</span>
+            </div>
+        </div>
+
+        <!-- Apply Button -->
+        <a href="application.html" id="applyBtn" class="hubtel-btn">Apply For Business Loan &rarr;</a>
+
+        <!-- Footer -->
+        <div class="hubtel-footer">
+            <div class="footer-links">
+                <a href="terms.html">Terms of Service</a>
+                <span>•</span>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+            <span>&copy; 2026 Hubtel Business. All rights reserved.</span>
+        </div>
+    </div>
+
+    <!-- Floating Blinking Button for Top 20 Business Ideas -->
+    <button class="floating-idea-btn" onclick="openIdeasModal()">
+        <div class="hubtel-pulse-icon">H</div>
+        <span>Top 20 Business Ideas</span>
+    </button>
+
+    <!-- Modal for Top 20 Ideas Under 50,000 Cedis -->
+    <div id="ideasModal">
+        <div class="modal-box">
+            <div class="modal-header-row">
+                <h3>Top 20 Startup Ideas (< GH₵ 50k)</h3>
+                <button class="close-modal" onclick="closeIdeasModal()">&times;</button>
+            </div>
+            <div class="ideas-list">
+                <div class="idea-item">
+                    <div class="hubtel-idea-header">
+                        <div class="idea-title">1. Mini-Mart & Provision Store <span class="idea-cost">GH₵ 15,000 - 40,000</span></div>
+                    </div>
+                    <div class="idea-desc">Stock high-demand everyday household goods and groceries in a populated residential neighborhood.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">2. Modern Laundry & Dry Cleaning <span class="idea-cost">GH₵ 20,000 - 45,000</span></div>
+                    <div class="idea-desc">Acquire commercial washing machines and irons to serve busy urban professionals and students.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">3. Agribusiness & Poultry Farming <span class="idea-cost">GH₵ 10,000 - 35,000</span></div>
+                    <div class="idea-desc">Set up a broiler or layer bird pen, or invest in fast-turnaround vegetable greenhouse farming.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">4. Quick-Service Food Delivery Kiosk <span class="idea-cost">GH₵ 5,000 - 20,000</span></div>
+                    <div class="idea-desc">Launch a specialized local or fast-food spot optimized for takeaway and mobile app deliveries.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">5. E-commerce Fashion & Boutique <span class="idea-cost">GH₵ 8,000 - 25,000</span></div>
+                    <div class="idea-desc">Import trendy clothing, footwear, and accessories and market heavily through social media channels.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">6. LPG Gas Refilling Station Agency <span class="idea-cost">GH₵ 25,000 - 50,000</span></div>
+                    <div class="idea-desc">Setup a safe, licensed retail cylinder exchange and refilling depot.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">7. Event Rentals & Decor Service <span class="idea-cost">GH₵ 12,000 - 30,000</span></div>
+                    <div class="idea-desc">Purchase chairs, canopies, lighting, and decor items for weddings, funerals, and corporate parties.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">8. Cold Store Fish & Meat Hub <span class="idea-cost">GH₵ 20,000 - 48,000</span></div>
+                    <div class="idea-desc">Install chest freezers to wholesale frozen fish, chicken, and beef to local chop bars and retailers.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">9. Mobile Phone & Accessories Shop <span class="idea-cost">GH₵ 10,000 - 30,000</span></div>
+                    <div class="idea-desc">Retail smartphones, chargers, power banks, earpods, and offer quick screen repair services.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">10. Professional Printing & Branding Press <span class="idea-cost">GH₵ 22,000 - 45,000</span></div>
+                    <div class="idea-desc">Invest in heat press machines, banner printers, and souvenir customization for corporate events.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">11. Water Purification & Sachet Depot <span class="idea-cost">GH₵ 18,000 - 40,000</span></div>
+                    <div class="idea-desc">Establish a reverse osmosis water treatment and distribution plant for bottled and bagged water.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">12. Salon & Barbering Lounge <span class="idea-cost">GH₵ 8,000 - 25,000</span></div>
+                    <div class="idea-desc">Create a modern grooming studio with premium styling chairs, hair dryers, and washing basins.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">13. Pharmacy & OTC Medicine Store <span class="idea-cost">GH₵ 30,000 - 50,000</span></div>
+                    <div class="idea-desc">Stock essential over-the-counter drugs and pharmaceuticals with licensed pharmacist oversight.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">14. Auto Spare Parts Retail <span class="idea-cost">GH₵ 15,000 - 40,000</span></div>
+                    <div class="idea-desc">Supply fast-moving vehicle service filters, engine oil, brake pads, and spark plugs.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">15. Cleaning & Fumigation Service <span class="idea-cost">GH₵ 5,000 - 18,000</span></div>
+                    <div class="idea-desc">Equip a mobile crew with industrial vacuum cleaners and fumigation gear for residential and office clients.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">16. Computer Training & Cyber Cafe <span class="idea-cost">GH₵ 10,000 - 28,000</span></div>
+                    <div class="idea-desc">Set up desktop terminals for digital services, printing, document typing, and professional ICT training.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">17. Bakery & Pastry Production <span class="idea-cost">GH₵ 15,000 - 38,000</span></div>
+                    <div class="idea-desc">Acquire commercial ovens and dough mixers to supply fresh bread and pastries to local shops.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">18. Cosmetics & Organic Skincare Line <span class="idea-cost">GH₵ 6,000 - 20,000</span></div>
+                    <div class="idea-desc">Formulate or wholesale organic shea butter mixes, natural soaps, and cosmetic products.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">19. Poultry Feed & Veterinary Shop <span class="idea-cost">GH₵ 12,000 - 35,000</span></div>
+                    <div class="idea-desc">Supply animal feeds, vaccines, and supplements directly to local farmers.</div>
+                </div>
+                <div class="idea-item">
+                    <div class="idea-title">20. Solar Installation & Maintenance <span class="idea-cost">GH₵ 10,000 - 30,000</span></div>
+                    <div class="idea-desc">Import and install solar inverter systems, batteries, and backup panels for homes and offices.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const amountSlider = document.getElementById('loanAmount');
+        const periodSlider = document.getElementById('loanPeriod');
+        
+        const amountValSpan = document.getElementById('amountVal');
+        const periodValSpan = document.getElementById('periodVal');
+        const summaryMonthly = document.getElementById('summaryMonthly');
+        const summaryTotal = document.getElementById('summaryTotal');
+        const applyBtn = document.getElementById('applyBtn');
+
+        const MONTHLY_INTEREST_RATE = 0.015; // 1.5% fixed rate
+
+        function updateCalculations() {
+            const principal = parseFloat(amountSlider.value);
+            const months = parseInt(periodSlider.value);
+            
+            const totalInterest = principal * MONTHLY_INTEREST_RATE * months;
+            const totalPayable = principal + totalInterest;
+            const monthlyPayment = totalPayable / months;
+
+            amountValSpan.textContent = `GH₵ ${principal.toLocaleString()}`;
+            periodValSpan.textContent = `${months} ${months === 1 ? 'Month' : 'Months'}`;
+            summaryMonthly.textContent = `GH₵ ${monthlyPayment.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+            summaryTotal.textContent = `GH₵ ${totalPayable.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+        }
+
+        function saveDataAndNavigate(e) {
+            e.preventDefault();
+            
+            localStorage.setItem('hubtelLoanAmount', amountValSpan.textContent);
+            localStorage.setItem('hubtelLoanPeriod', periodValSpan.textContent);
+            localStorage.setItem('hubtelMonthlyPayment', summaryMonthly.textContent);
+            localStorage.setItem('hubtelTotalPayable', summaryTotal.textContent);
+
+            window.location.href = 'application.html';
+        }
+
+        amountSlider.addEventListener('input', updateCalculations);
+        periodSlider.addEventListener('input', updateCalculations);
+        applyBtn.addEventListener('click', saveDataAndNavigate);
+
+        // Modal Controls
+        function openIdeasModal() {
+            document.getElementById('ideasModal').style.display = 'flex';
+        }
+
+        function closeIdeasModal() {
+            document.getElementById('ideasModal').style.display = 'none';
+        }
+
+        // Initialize on load
+        updateCalculations();
+    </script>
+</body>
+</html>

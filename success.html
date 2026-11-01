@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-visual">
+<meta name="theme-color" content="#202020">
+
+<title>Loan Approved | Hubtel Business</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    :root {
+        --background: #202020;
+        --surface: #2E2E2E;
+        --text-primary: #FFFFFF;
+        --text-secondary: #BDBDBD;
+        --border: #3B3B3B;
+        --primary: #4EB3A4;
+        --primary-dark: #0E2924;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 20px;
+        background-color: var(--background);
+        color: var(--text-primary);
+    }
+
+    .e-fullscreen-wrapper {
+        width: 100%;
+        max-width: 540px;
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        animation: slideUp .7s ease;
+        position: relative;
+        padding-bottom: 20px;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Top Bar with Logo & Small Corner Share Button */
+    .top-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+
+    .e-logo {
+        text-align: left;
+        font-size: 24px;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        text-transform: uppercase;
+    }
+
+    .e-logo span {
+        color: var(--primary);
+    }
+
+    .e-logo small {
+        display: block;
+        font-size: 9px;
+        letter-spacing: 2px;
+        color: var(--text-secondary);
+        margin-top: 2px;
+    }
+
+    /* Small Corner WhatsApp Share Button */
+    .corner-share-btn {
+        background: #25D366;
+        color: #ffffff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        transition: transform 0.15s ease, background 0.15s ease;
+        text-decoration: none;
+    }
+
+    .corner-share-btn:hover {
+        transform: scale(1.05);
+        background: #22bf5b;
+    }
+
+    /* SUCCESS ICON */
+    .e-success-icon {
+        width: 72px;
+        height: 72px;
+        margin: 6px auto 0 auto;
+        background: rgba(78, 179, 164, 0.15);
+        color: var(--primary);
+        border: 2px solid rgba(78, 179, 164, 0.4);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        animation: pop .6s ease;
+    }
+
+    @keyframes pop {
+        0% { transform: scale(.4); }
+        70% { transform: scale(1.15); }
+        100% { transform: scale(1); }
+    }
+
+    h1 {
+        font-size: 26px;
+        text-align: center;
+        color: var(--text-primary);
+        margin-top: -2px;
+    }
+
+    .e-subtitle {
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 14px;
+        line-height: 1.5;
+        padding: 0 10px;
+        margin-top: -6px;
+    }
+
+    /* APPROVAL STATUS */
+    .e-status-badge {
+        text-align: center;
+    }
+
+    .e-status {
+        display: inline-block;
+        background: var(--primary-dark);
+        border: 1px solid rgba(78, 179, 164, 0.4);
+        color: var(--primary);
+        padding: 10px 22px;
+        border-radius: 30px;
+        font-size: 13.5px;
+        font-weight: 900;
+        letter-spacing: 1px;
+    }
+
+    /* APPLICATION DETAILS */
+    .e-details {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 22px 24px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .e-detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+    }
+
+    .e-detail-row:last-child {
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .e-detail-row span {
+        color: var(--text-secondary);
+    }
+
+    .e-detail-row strong {
+        color: var(--text-primary);
+        text-align: right;
+        overflow-wrap: anywhere;
+    }
+
+    /* WALLET MESSAGE */
+    .e-message {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 20px;
+        line-height: 1.6;
+        color: var(--text-secondary);
+        font-size: 13.5px;
+    }
+
+    .e-message strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 15px;
+        color: var(--primary);
+    }
+
+    /* WALLET REMINDER */
+    .e-wallet-reminder {
+        background: var(--primary-dark);
+        border: 1px solid rgba(78, 179, 164, 0.3);
+        border-radius: 20px;
+        padding: 20px;
+        color: #e0f2f1;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .e-wallet-reminder strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--primary);
+    }
+
+    /* MAIN BUTTON */
+    .e-btn {
+        display: block;
+        width: 100%;
+        padding: 18px;
+        border-radius: 18px;
+        background: var(--primary);
+        color: var(--primary-dark);
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 900;
+        transition: all 0.2s ease;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .e-btn:hover {
+        transform: translateY(-2px);
+        background: #5dcab9;
+    }
+
+    /* FOOTER */
+    .e-footer {
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 11.5px;
+        line-height: 1.8;
+        border-top: 1px solid var(--border);
+        padding-top: 16px;
+    }
+
+    @media(max-width: 500px) {
+        .e-fullscreen-wrapper {
+            padding: 10px;
+            gap: 20px;
+        }
+        h1 {
+            font-size: 22px;
+        }
+        .e-detail-row {
+            font-size: 13px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="e-fullscreen-wrapper">
+
+    <!-- TOP HEADER: HUBTEL LOGO & SMALL CORNER SHARE BUTTON -->
+    <div class="top-header-row">
+        <div class="e-logo">
+            Hubtel <span>Business</span>
+            <small>STARTUP & GROWTH FINANCING</small>
+        </div>
+        <a href="javascript:void(0);" onclick="shareToWhatsApp()" class="corner-share-btn">
+            <i class="fa-brands fa-whatsapp" style="font-size: 15px;"></i> Share
+        </a>
+    </div>
+
+    <!-- SUCCESS ANIMATION -->
+    <div class="e-success-icon">✓</div>
+
+    <h1 id="txtHeading">Congratulations!</h1>
+
+    <p class="e-subtitle" id="greeting">
+        Your business capital application has been approved successfully.
+    </p>
+
+    <!-- APPROVED STATUS -->
+    <div class="e-status-badge">
+        <div class="e-status" id="txtStatusBadge">
+            ✓ CAPITAL APPROVED
+        </div>
+    </div>
+
+    <!-- APPLICATION INFORMATION -->
+    <div class="e-details">
+
+        <div class="e-detail-row">
+            <span>🆔 Application ID</span>
+            <strong id="applicationId">000000</strong>
+        </div>
+
+        <div class="e-detail-row">
+            <span>👤 Entrepreneur Name</span>
+            <strong id="applicant">Loading...</strong>
+        </div>
+
+        <div class="e-detail-row">
+            <span>📱 Phone Number</span>
+            <strong id="phone">Loading...</strong>
+        </div>
+
+        <div class="e-detail-row">
+            <span>💰 Approved Capital</span>
+            <strong id="amount">Loading...</strong>
+        </div>
+
+        <div class="e-detail-row">
+            <span>📋 Application Status</span>
+            <strong style="color:var(--primary);">APPROVED ✓</strong>
+        </div>
+
+        <div class="e-detail-row">
+            <span>💳 Disbursement Method</span>
+            <strong>Hubtel Wallet</strong>
+        </div>
+
+        <div class="e-detail-row">
+            <span>⏰ Expected Processing</span>
+            <strong>Within 24 Hours</strong>
+        </div>
+
+    </div>
+
+    <!-- CELEBRATORY PROMO MESSAGE -->
+    <div class="e-message">
+        <strong>🎉 Celebrating 20 Years of Business Growth!</strong>
+        <span>To celebrate 20 years of supporting business growth, Hubtel is offering business capital to eligible entrepreneurs and startups. Your approved funds are being prepared for rapid disbursement within 24 hours.</span>
+    </div>
+
+    <!-- WALLET REMINDER -->
+    <div class="e-wallet-reminder">
+        <strong>🔐 Important Account Reminder</strong>
+        <span>Your capital is scheduled to be disbursed within 24 hours. Please ensure your Hubtel wallet maintains a balance equivalent to 10% of your approved amount to guarantee smooth processing and instant release.</span>
+    </div>
+
+    <!-- HOME BUTTON -->
+    <a href="index.html" class="e-btn">
+        🏠 Return to Homepage
+    </a>
+
+    <!-- COPYRIGHT -->
+    <div class="e-footer">
+        Thank you for choosing Hubtel Business ❤️
+        <br>
+        © 2026 Hubtel. All Rights Reserved.
+    </div>
+
+</div>
+
+<script>
+// Retrieve saved user details from localStorage
+function getValue(key, fallback) {
+    try {
+        return localStorage.getItem(key) || fallback;
+    } catch (error) {
+        return fallback;
+    }
+}
+
+const name = getValue('hubtelUserName', getValue('userFullName', 'Entrepreneur'));
+const phone = getValue('hubtelUserPhone', getValue('userPhone', 'Not provided'));
+const amount = getValue('hubtelLoanAmount', getValue('loanAmount', 'Not provided'));
+
+// Display user information
+document.getElementById('applicant').textContent = name;
+document.getElementById('phone').textContent = phone;
+document.getElementById('amount').textContent = amount;
+document.getElementById('greeting').textContent = `Congratulations ${name}! Your business capital has been approved.`;
+
+function generateApplicationId() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+let applicationId;
+try {
+    applicationId = getValue('hubtelApplicationId', null);
+    if (!applicationId) {
+        applicationId = generateApplicationId();
+        localStorage.setItem('hubtelApplicationId', applicationId);
+    }
+} catch (error) {
+    applicationId = generateApplicationId();
+}
+
+document.getElementById('applicationId').textContent = applicationId;
+
+// WhatsApp Share Function
+function shareToWhatsApp() {
+    const shareText = `🎉 Exciting news for entrepreneurs and startups!\n\nTo celebrate 20 years of supporting business growth, Hubtel is offering business capital to eligible entrepreneurs and startups. 🚀\n\nIf you've been looking for an opportunity to grow your business or launch your startup, this could be your chance!\n\nApply here: https://hubtel.com\n\nDon't miss out! ❤️`;
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+    window.open(whatsappUrl, '_blank');
+}
+</script>
+
+</body>
+</html>
